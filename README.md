@@ -12,3 +12,6 @@ The dependency Libraries are as follow:
 > pytorch = 1.4.0  
 > scikit-learn = 0.23.1  
 > numpy = 1.19.4  
+
+## Code Structure
+The whole code included three parts: "Model.py", "net_main.py" and "process.py". The "Model.py" includes the EddyVNN model structure. The "process.py" contains process of reading data and normalization, and the interpolation method.
