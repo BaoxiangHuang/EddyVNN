@@ -14,4 +14,20 @@ The dependency Libraries are as follow:
 > numpy = 1.19.4  
 
 ## Code Structure
-The whole code included three parts: "Model.py", "net_main.py" and "process.py". The "Model.py" includes the EddyVNN model structure. The "process.py" contains process of reading data and normalization, and the interpolation method.
+The whole code included three parts: "Model.py", "net_main.py" and "process.py". The "Model.py" includes the EddyVNN model structure. The "process.py" contains a process of reading data and normalization and the interpolation method. The "net_main.py" is the main operating file, achieving training and testing of models. In the processing of the training, we used 60% of the data as the training set and 40% of the data is used as the testing set.
+
+## Running
+run the following scripts to train EddyVNN model and test EddyVNN model. 
+'''
+python net.main.py
+'''
+you can run the following scripts to change the batch size, learning rate and other parameters.
+'''
+python net.main.py --batch 512  --start_year 2002 --end_year 2010 --model_layers 101
+'''
+
+
+
+
+
+
