@@ -19,7 +19,7 @@ parser.add_argument('--data_path', type=str, default='eddy_data/', help='the pat
 parser.add_argument('--save_path', type=str, default='eddy_data/Argo/Alt purified NE/', help='the save path of the NE')
 parser.add_argument('--data_type', type=str, default='Argo', help='the type of the eddies data')
 parser.add_argument('--start_year', type=int, default=2002, help='the year of the first data')
-parser.add_argument('--end_year', type=int, default=2003, help='final year')
+parser.add_argument('--end_year', type=int, default=2019, help='final year')
 args = parser.parse_args()
 
 
