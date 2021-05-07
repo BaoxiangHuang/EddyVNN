@@ -18,13 +18,13 @@ The whole code included three parts: "Model.py", "net_main.py" and "process.py".
 
 ## Running
 run the following scripts to train EddyVNN model and test EddyVNN model. 
-'''
+```
 python net.main.py
-'''
+```
 you can run the following scripts to change the batch size, learning rate and other parameters.
-'''
+```
 python net.main.py --batch 512  --start_year 2002 --end_year 2010 --model_layers 101
-'''
+```
 
 
 
