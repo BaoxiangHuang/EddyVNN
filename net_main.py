@@ -1,38 +1,41 @@
 from torch.utils import data
 from Module import *
 import argparse
-import time
 import numpy as np
+from sklearn.model_selection import train_test_split
+from torch import softmax
+from Process import Processing
 
-parser = argparse.ArgumentParser("Wo")
+
+parser = argparse.ArgumentParser("EddyVNN")
 parser.add_argument('--epochs', type=int, default=100, help='num of training epochs')
 parser.add_argument('--learning_rate', type=float, default=0.0001, help='init learning rate')
 parser.add_argument('--train_size', type=float, default=0.6, help='size of train data set')
 parser.add_argument('--batch', type=int, default=256, help='batch size')
-parser.add_argument('--T_max', type=int, default=5, help='learn T_max')
 parser.add_argument('--step_size', type=int, default=20, help='lr scheduler step size')
 parser.add_argument('--gamma', type=float, default=0.1, help='StepLR gamma value')
-
+parser.add_argument('--model_layers', type=int, default=34, help='number of network layers')
+parser.add_argument('--data_path', type=str, default='eddy_data/', help='the path of the eddy data')
+parser.add_argument('--save_path', type=str, default='eddy_data/Argo/Alt purified NE/', help='the save path of the NE')
+parser.add_argument('--data_type', type=str, default='Argo', help='the type of the eddies data')
+parser.add_argument('--start_year', type=int, default=2002, help='the year of the first data')
+parser.add_argument('--end_year', type=int, default=2003, help='final year')
 args = parser.parse_args()
 
-class EddyVNN:
+
+class Train:
     def __init__(self, path, model):
         self.path = path
         self.model = model
         self.model_running()
 
     def data_load(self):
-        data_path = self.path + 'data.npy'
-        label_path = self.path + 'label.npy'
-        eddy_data = np.load(data_path)
-        eddy_label = np.load(label_path)
+        data_processing = Processing(args.data_path, args.save_path, args.start_year, args.end_year, args.data_type)
+        datas, labels = data_processing.input()
+        X_train, X_test, Y_train, Y_test = train_test_split(datas, labels, train_size=args.train_size)
 
-        print('data load success')
-
-        X_train, X_test, Y_train, Y_test = train_test_split(eddy_data, eddy_label, train_size=args.train_size)
-
-        train_set = data.TensorDataset(torch.tensor(X_train.astype('float'), dtype=torch.float32), torch.tensor(Y_train.astype('float'), dtype=torch.int64))
-        test_set = data.TensorDataset(torch.tensor(X_test.astype('float'), dtype=torch.float32), torch.tensor(Y_test.astype('float'), dtype=torch.int64))
+        train_set = data.TensorDataset(torch.tensor(np.array(X_train).astype('float'), dtype=torch.float32), torch.tensor(np.array(Y_train).astype('float'), dtype=torch.int64))
+        test_set = data.TensorDataset(torch.tensor(np.array(X_test).astype('float'), dtype=torch.float32), torch.tensor(np.array(Y_test).astype('float'), dtype=torch.int64))
         train_loader = data.DataLoader(train_set, batch_size=args.batch, shuffle=True)
         test_loader = data.DataLoader(test_set, batch_size=args.batch, shuffle=False)
 
@@ -107,7 +110,11 @@ class EddyVNN:
 
 
 if __name__ == '__main__':
-    path = 'eddy_data/'
-    model = one_resnet34().cuda()
-    EddyVNN(path, model)
+    if args.model_layers == 34:
+        model = EddyVNN34().cuda()
+    elif args.model_layers == 50:
+        model = EddyVNN50().cuda()
+    else:
+        model = EddyVNN101().cuda()
+    Train(args.data_path, model)
 
