@@ -12,3 +12,7 @@ The dependency Libraries are as follow:
 > pytorch = 1.4.0
 > scikit-learn = 0.23.1
 > numpy = 1.19.4
+
+> 区块引用
+> 菜鸟教程
+> 学的不仅是技术更是梦想
